@@ -1,17 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO.Ports;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+
 
 namespace Arduino_Com
 {
@@ -20,9 +10,41 @@ namespace Arduino_Com
     /// </summary>
     public partial class MainWindow : Window
     {
+        private SerialPort myPort;
         public MainWindow()
         {
             InitializeComponent();
+            button.Click += listener;
+        }
+
+        private void button_Click(object sender, RoutedEventArgs e)
+        {
+            init_Port();
+        }
+        private void init_Port()
+        {
+            myPort = new SerialPort(numberPort(), 9600);
+            myPort.Open();
+        }
+        private string numberPort()
+        {
+            return "COM"+Convert.ToInt32(textBox.Text);
+        }
+        private void listener(object sender, RoutedEventArgs e)
+        {
+            myPort.DataReceived += MyPort_DataReceived;
+        }
+
+        private void MyPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            SerialPort sp = (SerialPort)sender; // why we do it
+            string indata = sp.ReadLine();
+            try
+            {
+                // indata used by other thread, how to solve this problem
+                listBox.Items.Add(indata);
+            }
+            catch { }
         }
     }
 }
