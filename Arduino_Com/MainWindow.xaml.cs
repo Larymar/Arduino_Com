@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.ObjectModel;
 using System.IO.Ports;
 using System.Windows;
 
@@ -11,10 +12,13 @@ namespace Arduino_Com
     public partial class MainWindow : Window
     {
         private SerialPort myPort;
+        //public ObservableCollection<string> collection;
         public MainWindow()
         {
             InitializeComponent();
             button.Click += listener;
+            //collection = new ObservableCollection<string>();
+           // listBox.ItemsSource = collection;
         }
 
         private void button_Click(object sender, RoutedEventArgs e)
@@ -32,7 +36,7 @@ namespace Arduino_Com
         }
         private void listener(object sender, RoutedEventArgs e)
         {
-            myPort.DataReceived += MyPort_DataReceived;
+            myPort.DataReceived += new SerialDataReceivedEventHandler(MyPort_DataReceived);
         }
 
         private void MyPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -42,9 +46,13 @@ namespace Arduino_Com
             try
             {
                 // indata used by other thread, how to solve this problem
-                listBox.Items.Add(indata);
+                //listBox.Items.Add(indata);
+                //collection.Add(indata);
+                listBox.Dispatcher.Invoke(() => listBox.Items.Add(indata));
             }
-            catch { }
+            catch(Exception exc) {
+                var i = 5;
+            }
         }
     }
 }
