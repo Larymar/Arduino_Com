@@ -20,6 +20,7 @@ namespace Arduino_Com
         private void button_Click(object sender, RoutedEventArgs e)
         {
             init_Port();
+            
         }
         private void init_Port()
         {
@@ -45,6 +46,12 @@ namespace Arduino_Com
                 listBox.Dispatcher.Invoke(() => listBox.Items.Add(indata));
             }
             catch { }
+        }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            myPort.Write(textBox1.Text);
+            textBox1.Clear();
         }
     }
 }
