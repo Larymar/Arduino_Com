@@ -54,5 +54,10 @@ namespace Arduino_Com
                 var i = 5;
             }
         }
+
+        private void button1_Click(object sender, RoutedEventArgs e)
+        {
+            myPort.Write(textBox1.Text);
+        }
     }
 }
