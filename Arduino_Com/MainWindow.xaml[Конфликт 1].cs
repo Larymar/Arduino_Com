@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Text;
 using System.IO.Ports;
 using System.Windows;
 
@@ -11,20 +10,6 @@ namespace Arduino_Com
     /// </summary>
     public partial class MainWindow : Window
     {
-        #region string LogText
-
-        public string LogText
-        {
-            get { return (string)GetValue(LogTextProperty); }
-            set { SetValue(LogTextProperty, value); }
-        }
-
-        // Using a DependencyProperty as the backing store for LogText.  This enables animation, styling, binding, etc...
-        public static readonly DependencyProperty LogTextProperty =
-            DependencyProperty.Register("LogText", typeof(string), typeof(MainWindow), new PropertyMetadata(string.Empty));
-
-        #endregion
-
         private SerialPort myPort;
         public MainWindow()
         {
@@ -35,7 +20,6 @@ namespace Arduino_Com
         private void button_Click(object sender, RoutedEventArgs e)
         {
             init_Port();
-
         }
         private void init_Port()
         {
@@ -44,7 +28,7 @@ namespace Arduino_Com
         }
         private string numberPort()
         {
-            return "COM" + Convert.ToInt32(textBox.Text);
+            return "COM"+Convert.ToInt32(textBox.Text);
         }
         private void listener(object sender, RoutedEventArgs e)
         {
@@ -53,22 +37,14 @@ namespace Arduino_Com
 
         private void MyPort_DataReceived(object sender, SerialDataReceivedEventArgs e)
         {
-            var buff = new byte[myPort.BytesToRead];
-            myPort.Read(buff, 0, buff.Length);
-            var indata = Encoding.UTF8.GetString(buff);
+            SerialPort sp = (SerialPort)sender; // why we do it
+            string indata = sp.ReadLine();
             try
             {
                 // indata used by other thread, how to solve this problem
-                //listBox.Dispatcher.Invoke(() => listBox.Items.Add(indata));
-                this.Dispatcher.Invoke(() => this.LogText += indata);
+                listBox.Dispatcher.Invoke(() => listBox.Items.Add(indata));
             }
             catch { }
-        }
-
-        private void button1_Click(object sender, RoutedEventArgs e)
-        {
-            myPort.Write(textBox1.Text);
-            textBox1.Clear();
         }
     }
 }
