@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Arduino_Com"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="ComReader" Height="350" Width="525">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -29,18 +29,28 @@
         </Grid.ColumnDefinitions>
         <ToolBar Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="4">
 
-            
-            <ComboBox x:Name="COMports"  BorderThickness="1" BorderBrush="Black"/>
-            <ComboBox x:Name="File" BorderThickness="1" BorderBrush="Black"/>
-            
-            
+
+
+            <Menu x:Name="File_menu">
+                <MenuItem Header="Файл">
+                    <MenuItem Header="Сохранить"/>
+                    <MenuItem Header="Загрузить"/>
+                </MenuItem>
+            </Menu>
+            <ComboBox x:Name="COMports"  BorderThickness="1" BorderBrush="Black" DropDownOpened="COMports_MouseDown"/>
+
         </ToolBar>
 
         <Button  Grid.Column="5"  x:Name="Start_button" Content="Открыть" Click="Start_button_Click" BorderThickness="1" BorderBrush="Black"/>
         <TextBox Grid.Row="3" Grid.Column="1" x:Name="Input_box" TextWrapping="Wrap" Text="Отправить" MouseDoubleClick="Input_box_MouseDoubleClick" />
         
         <!--<ListBox Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" x:Name="listBox" />-->
-        <TextBox Grid.Row="5" x:Name="log"  Grid.Column="1" Grid.ColumnSpan="5" AcceptsReturn="True" VerticalScrollBarVisibility="Visible"  HorizontalScrollBarVisibility="Visible" IsReadOnly="True" TextChanged="log_TextChanged" />
+        <TextBox Grid.Row="5" x:Name="log"  Grid.Column="1" Grid.ColumnSpan="5" AcceptsReturn="True" 
+                 VerticalScrollBarVisibility="Visible"  
+                 HorizontalScrollBarVisibility="Visible" 
+                 IsReadOnly="True" 
+                 TextChanged="log_TextChanged" 
+                 />
         <Button Grid.Row="3" Grid.Column="5" x:Name="Send_button" Content="Отправить"  Click="Send_button_Click" />
         <Button Grid.Column="5" Grid.Row="6" x:Name="Clean" Content="Очистить" Click="Clean_Click"/>
         <TextBox Grid.Column="3" Grid.Row="6" x:Name="Baud" Text="9600"/>
